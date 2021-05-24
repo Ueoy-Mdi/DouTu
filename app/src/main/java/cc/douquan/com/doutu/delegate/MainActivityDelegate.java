@@ -51,7 +51,8 @@ public class MainActivityDelegate extends AppDelegate {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                searchView.closeSearch();
+                return true;
             }
 
             @Override
