@@ -1,5 +1,6 @@
 package cc.douquan.com.doutu.delegate;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,8 @@ import br.com.mauker.materialsearchview.MaterialSearchView;
 import butterknife.Bind;
 import cc.douquan.com.doutu.R;
 import cc.douquan.com.doutu.mvp_frame.view.AppDelegate;
+import cc.douquan.com.doutu.utils.UiHelper;
+import cc.douquan.com.doutu.view.activity.MainActivity;
 
 /**
  * Created by qef on 2016/8/28.
@@ -47,11 +50,14 @@ public class MainActivityDelegate extends AppDelegate {
         return toolbar;
     }
 
-    public void setOnQueryTextListener() {
+    public void setOnQueryTextListener(final MainActivity mainActivity) {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.closeSearch();
+                Bundle bundle = new Bundle();
+                bundle.putString("query", query);
+                UiHelper.goSearchActivity(mainActivity, bundle);
                 return true;
             }
 

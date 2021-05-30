@@ -32,6 +32,10 @@ public interface BizInterface {
     String HOT_URL = "/app2/api/dt/shareItem/getByTag.html";
 
     /**
+     * 搜索表情
+     */
+    String SEARCH_URL = "/app2/api/dt/shareItem/search.html";
+    /**
      * 天气预报 (根据地名)
      * 服务商： 易源接口
      */

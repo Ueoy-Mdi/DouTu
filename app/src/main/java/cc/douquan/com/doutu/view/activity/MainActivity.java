@@ -39,7 +39,7 @@ public class MainActivity extends ActivityPresenter<MainActivityDelegate> {
         //viewpager加载adapter
         viewDelegate.setViewPagerAdapter(fAdapter);
         viewDelegate.setupWithViewPager();
-        viewDelegate.setOnQueryTextListener();
+        viewDelegate.setOnQueryTextListener(this);
         viewDelegate.setSearchViewListener();
     }
 

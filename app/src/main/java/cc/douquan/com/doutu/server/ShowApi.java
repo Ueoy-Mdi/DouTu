@@ -3,6 +3,7 @@ package cc.douquan.com.doutu.server;
 
 import cc.douquan.com.doutu.common.BizInterface;
 import cc.douquan.com.doutu.model.HomeImgEntity;
+import cc.douquan.com.doutu.model.SearchEntity;
 import cc.douquan.com.doutu.model.ShowApiResponse;
 import retrofit.Call;
 import retrofit.http.GET;
@@ -44,5 +45,11 @@ public interface ShowApi {
                                          @Query("pageNum") int page,
                                          @Query("tagId") int tagId,
                                          @Query("pageSize") int totalPage);
+
+    @GET(BizInterface.SEARCH_URL)
+    Observable<SearchEntity> getSearchList(@Header("Cache-Control") String cacheControl,
+                                           @Query("keyWord") String keyWord,
+                                           @Query("pageNum") int pageNum,
+                                           @Query("pageSize") int pageSize);
 
 }
