@@ -1,9 +1,11 @@
 package cc.douquan.com.doutu.delegate;
 
 import android.content.Context;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -22,7 +24,7 @@ import rx.functions.Action1;
 
 /**
  * <Pre>
- *     recycleview通用视图代理
+ * recycleview通用视图代理
  * </Pre>
  *
  * @author 刘阳
@@ -37,6 +39,8 @@ public abstract class BaseRecyclerViewDelegate extends AppDelegate implements Lo
     SwipeRefreshLayout swipe_refresh_layout;//下拉刷新控件
     @Bind(R.id.recyclerview)
     RecyclerView recyclerview;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBarLayout;
     //悬浮菜单
 //    @Bind(R.id.floating_action_menu)
 //    FloatingActionMenu floating_action_menu;
@@ -55,6 +59,15 @@ public abstract class BaseRecyclerViewDelegate extends AppDelegate implements Lo
      * 初始化recyclerview，必须重写
      */
     abstract void initRecyclerView();
+
+    /**
+     * 设置toolbar
+     */
+    @Override
+    public Toolbar getToolbar() {
+        return (Toolbar) appBarLayout.findViewById(R.id.toolbar);
+    }
+
     /**
      * 设置悬浮菜单是否显示，必须重写
      */
@@ -139,6 +152,7 @@ public abstract class BaseRecyclerViewDelegate extends AppDelegate implements Lo
             progress_layout.showError(messageId, listener);
         }
     }
+
     @Override
     public Context getContext() {
         return null;

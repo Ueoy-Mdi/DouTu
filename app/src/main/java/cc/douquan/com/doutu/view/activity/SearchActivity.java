@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -53,12 +54,17 @@ public class SearchActivity extends ActivityPresenter<SearchActivitDelegate> imp
         return SearchActivitDelegate.class;
     }
 
+
     @Override
     protected void initData() {
         super.initData();
+
+//        getSupportActionBar().setTitle("吃货");
+//        getSupportActionBar().setWindowTitle("吃货");
         Intent intent = getIntent();
         Bundle extras = intent.getBundleExtra("bundle");
         query = extras.getString("query");
+        viewDelegate.setToolbar(getSupportActionBar(), query);
         Logger.i("query", extras.getString("query"));
 
         searchImgModel = new SearchImgModelImpl();
@@ -159,5 +165,15 @@ public class SearchActivity extends ActivityPresenter<SearchActivitDelegate> imp
                         }
                     });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }
