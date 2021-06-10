@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cc.douquan.com.doutu.Constants;
+import cc.douquan.com.doutu.MyApplication;
 import cc.douquan.com.doutu.R;
 import cc.douquan.com.doutu.adapter.HomePictureAdapter;
 import cc.douquan.com.doutu.delegate.HomeFragmentDelegate;
@@ -31,6 +35,7 @@ import cc.douquan.com.doutu.model.HomeImgModelImpl;
 import cc.douquan.com.doutu.model.OnNetRequestListener;
 import cc.douquan.com.doutu.mvp_frame.presenter.FragmentPresenter;
 import cc.douquan.com.doutu.utils.BitmapUtil;
+import cc.douquan.com.doutu.utils.CollectionDialog;
 import cc.douquan.com.doutu.utils.ShareUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -46,8 +51,9 @@ public class HomeFragment extends FragmentPresenter<HomeFragmentDelegate> implem
     private int mPageNum = 1;
     //新闻数据列表
     private List<HomeImgEntity.DataBean> mNews = new ArrayList<>();
-    private MyUmlitener uListener;
     private Context context;
+    private View mAlertView;
+    private AlertDialog mDialog;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -68,16 +74,14 @@ public class HomeFragment extends FragmentPresenter<HomeFragmentDelegate> implem
         mAdapter.setOnImageClickListener(new HomePictureAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                ShareUtils.share(getActivity(),
-//                        mNews.get(position).getGifPath(),
-//                        new MyUmlitener());
                 v = v.findViewById(R.id.iv_img);
-                shareGirl(v);
+                ShareUtils.shareGirl(v, getActivity());
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按", Toast.LENGTH_SHORT).show();
+                view = view.findViewById(R.id.iv_img);
+                CollectionDialog.showDialog(context, view, mNews.get(position).getPicPath());
             }
         });
         viewDelegate.setListAdapter(mAdapter);
@@ -135,49 +139,4 @@ public class HomeFragment extends FragmentPresenter<HomeFragmentDelegate> implem
         Logger.d("loadMore", "加载更多接口");
         netNewsList(false);
     }
-
-    class MyUmlitener implements UMShareListener {
-        @Override
-        public void onResult(SHARE_MEDIA share_media) {
-
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA share_media) {
-
-        }
-    }
-
-    public void shareGirl(View v) {
-        Drawable drawable = ((ImageView) v).getDrawable();
-        if (drawable != null) {
-            Bitmap bitmap = BitmapUtil.drawableToBitmap(drawable);
-
-            Observable.just(BitmapUtil.saveBitmap(bitmap, Constants.dir, "share.jpg", false))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Boolean>() {
-                        @Override
-                        public void call(Boolean isSuccess) {
-                            if (isSuccess) {
-                                //由文件得到uri
-                                Uri imageUri = Uri.fromFile(new File(Constants.dir + "/share.jpg"));
-                                Intent shareIntent = new Intent();
-                                shareIntent.setAction(Intent.ACTION_SEND);
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                                shareIntent.setType("image/*");
-                                startActivity(Intent.createChooser(shareIntent, "分享MeiZhi到"));
-                            } else {
-//                                Snackbar.make(mRoot, "大爷，分享出错了哦~", Snackbar.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-        }
-    }
-
 }
