@@ -52,8 +52,6 @@ public class HomeFragment extends FragmentPresenter<HomeFragmentDelegate> implem
     //新闻数据列表
     private List<HomeImgEntity.DataBean> mNews = new ArrayList<>();
     private Context context;
-    private View mAlertView;
-    private AlertDialog mDialog;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFragment = new HomeFragment();
@@ -81,6 +79,7 @@ public class HomeFragment extends FragmentPresenter<HomeFragmentDelegate> implem
             @Override
             public void onItemLongClick(View view, int position) {
                 view = view.findViewById(R.id.iv_img);
+                Logger.i("picpath", mNews.get(position).getPicPath());
                 CollectionDialog.showDialog(context, view, mNews.get(position).getPicPath());
             }
         });

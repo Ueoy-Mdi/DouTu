@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import cc.douquan.com.doutu.view.activity.MycollectionActivity;
 import cc.douquan.com.doutu.view.activity.SearchActivity;
 
 import static com.umeng.socialize.utils.DeviceConfig.context;
@@ -16,6 +17,13 @@ public class UiHelper {
     public static void goSearchActivity(Context context, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(context, SearchActivity.class);
+        intent.putExtra("bundle", bundle);
+        context.startActivity(intent);
+    }
+
+    public static void goCollectionActivity(Context context, Bundle bundle) {
+        Intent intent = new Intent();
+        intent.setClass(context, MycollectionActivity.class);
         intent.putExtra("bundle", bundle);
         context.startActivity(intent);
     }

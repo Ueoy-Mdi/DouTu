@@ -1,6 +1,7 @@
 package cc.douquan.com.doutu.view.activity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import br.com.mauker.materialsearchview.MaterialSearchView;
 import cc.douquan.com.doutu.R;
 import cc.douquan.com.doutu.adapter.TabViewPageAdapter;
+import cc.douquan.com.doutu.db.MyDb;
 import cc.douquan.com.doutu.delegate.MainActivityDelegate;
 import cc.douquan.com.doutu.mvp_frame.presenter.ActivityPresenter;
 
@@ -31,6 +33,7 @@ public class MainActivity extends ActivityPresenter<MainActivityDelegate> {
         initFragment();
         setSwipeBackEnable(false);
     }
+
 
     private void initFragment() {
         //设置TabLayout的模式

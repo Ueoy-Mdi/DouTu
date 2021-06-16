@@ -7,8 +7,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.orhanobut.logger.Logger;
+
 import cc.douquan.com.doutu.MyApplication;
 import cc.douquan.com.doutu.R;
+import cc.douquan.com.doutu.db.DBManager;
+import cc.douquan.com.doutu.entity.PicPath;
 
 /**
  * Created by feq on 2016/11/1.
@@ -16,15 +20,24 @@ import cc.douquan.com.doutu.R;
 
 public class CollectionDialog {
     private static AlertDialog mDialog;
+    private static DBManager dbManager;
+    private static final String DB_NAME = "pic_path.db";
+    private static final int DB_VERSION = 1;
 
-    public static void showDialog(final Context context, final View ivImg, String picPath) {
+    public static void showDialog(final Context context, final View ivImg, final String picPath) {
+
         mDialog = new AlertDialog.Builder(context, R.style.dialog).create();
         View mAlertView = View.inflate(MyApplication.getContext(), R.layout.share_dialog, null);
         mAlertView.findViewById(R.id.iv_collection).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShort("收藏");
+                ToastUtils.showShort("收藏成功");
+                Logger.i("picpath---", picPath);
                 mDialog.dismiss();
+                dbManager = new DBManager(context, DB_NAME, DB_VERSION, PicPath.class);
+                PicPath path = new PicPath();
+                path.setPicPath(picPath);
+                dbManager.insert(path);
             }
         });
         mAlertView.findViewById(R.id.iv_share).setOnClickListener(new View.OnClickListener() {
